@@ -48,6 +48,9 @@ app.get("/listings/:id", wrapAsync(async(req, res)=>{
 }));
 // Create Route
 app.post("/listings", wrapAsync(async(req, res, next) =>{
+    if(!req.body.listing) {
+        throw new ExpressError("send valid data for listing", 400);
+    }
         const newListing = new Listing(req.body.listing);
         await newListing.save();
         res.redirect("/listings");
@@ -92,12 +95,13 @@ app.use((req, res) => {
 });
 
 // app.all("*", (req, res, next) =>{
-//     next(new ExpressError("Page Not Found", 404));
+//     next(new ExpressError(404, "Page Not Found"));
 // });
 
 app.use((err,req, res, next) =>{
     let {statusCode=500, message="Something went wrong"} = err;
-    res.status(statusCode).send(message);
+    res.status(statusCode).render("error.ejs", {message});
+    // res.status(statusCode).send(message);
 });
 
 app.listen(8080, () => {
