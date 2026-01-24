@@ -6,5 +6,3 @@ class ExpressError extends Error {
     }
 }
 module.exports = ExpressError;
-
-<p>hi</p>
