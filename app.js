@@ -97,13 +97,13 @@ app.delete("/listings/:id", wrapAsync( async(req, res) =>{
 //     res.send("Successfull Testing");
 // });
 
-app.use((req, res) => {
-    res.status(404).send("404 Page Not Found");
-});
-
-// app.all("*", (req, res, next) =>{
-//     next(new ExpressError(404, "Page Not Found"));
+// app.use((req, res) => {
+//     res.status(404).send("404 Page Not Found");
 // });
+
+app.all("*", (req, res, next) =>{
+    next(new ExpressError(404, "Page Not Found"));
+});
 
 app.use((err,req, res, next) =>{
     let {statusCode=500, message="Something went wrong"} = err;
